@@ -1,69 +1,64 @@
 const deleteBtn = document.querySelectorAll('.close');
-const incompleteTasks = document.querySelectorAll('.task');
-const completedTasks = document.querySelectorAll('.task.completed');
+const tasks = document.querySelectorAll('.task');
+// const completedTasks = document.querySelectorAll('.task.completed')
 
-for(element of deleteBtn){
+for (element of deleteBtn) {
     element.addEventListener('click', deleteItem);
 }
 
-for(element of incompleteTasks){
-    element.addEventListener('click', markComplete);
+for (element of tasks) {
+    element.addEventListener('click', toggleComplete);
 }
 
-for(element of completedTasks){
-    element.addEventListener('click', markIncomplete);
-}
 
-async function deleteItem(){
-    const task = this.parentNode.childNodes[1];
-    try{
-        const res = await fetch('deleteItem', {
+// async function previousDate(){
+//     try{
+//         const res = await fetch('day=', {
+//             method: 'get',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify({
+//                 'day'
+//             })
+//         }
+//     }catch{
+
+//     }
+// }
+
+
+async function deleteItem() {
+    const id =  this.parentNode.dataset.id;
+    await console.log(id)
+    try {
+        const res = await fetch('deleteTask', {
             method: 'delete',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              'id': task.id
+                'id': id
             })
-          })
+        })
         const data = await res.json();
         console.log(data);
         location.reload()
-    }catch(err){
+    } catch (err) {
         console.log(err);
     }
 }
 
-async function markComplete(){
-    const task = this.parentNode.childNodes[1];
-    try{
-        const res = await fetch('markComplete', {
+async function toggleComplete() {
+    const classList = this.classList;
+    const id = this.parentNode.dataset.id
+    try {
+        const res = await fetch('toggleComplete', {
             method: 'put',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              'id': task.id
+                'id': id,
+                'classList': classList
             })
         })
-        const data = await res.json();
-        console.log(data);
         location.reload();
-    }catch(err){
-        console.log(err)
-    }
-}
-
-async function markIncomplete(){
-    const task = this.parentNode.childNodes[1];
-    console.log(this.parentNode.childNodes)
-    try{
-        const res = await fetch('markIncomplete', {
-            method: 'put',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              'id': task.id
-            })
-        })
-        const data = await res.json();
-        location.reload();
-    }catch(err){
+    }catch(err) {
         console.log(err)
     }
 }

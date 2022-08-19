@@ -1,8 +1,14 @@
 .completed{
     color: gray;
     text-decoration: line-through;
+    text-decoration-color: crimson;
+    text-decoration-thickness: 2px ;
 }
 .center {
     display: flex;
     justify-content: center;
+}
+.disabled {
+    pointer-events: none;
+
 }

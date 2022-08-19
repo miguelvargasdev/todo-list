@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,36 +13,51 @@
 
     <title>Daily Task List</title>
 </head>
+
 <body>
-    <nav class="grey lighten-1" role="navigation"></nav>
+    <nav class="grey lighten-1" role="navigation">
+        <div class="nav-wrapper">
+            <ul class="center">
+                <li class=""><a href="/day=<%= day %>"><i class="material-icons">chevron_left</i></a></li>
+                <li><a href="/"><%= date %></a></li>
+                <% if (date === dayjs().format('MMM DD, YYYY')){ %>
+                <li class="disabled"><a href="/"><i class="material-icons grey-text">chevron_right</i></a></li>
+                <% }else{ %>
+                <li class=""><a href="/"><i class="material-icons">chevron_right</i></a></li>
+                <% } %>
+            </ul>
+
+         </div>
+    </nav>
     <div class="center">
-    <div class="container">
-        <h1>Today's Task List: </h1>
-        <% if(items.length > 0){ %>
-        <ul class="todoItems collection">
-                <% for(let i=0; i < items.length; i++) {%>
-                    <li class="item collection-item ">
-                        <% if(items[i].completed === true) {%>
-                            <span class="task completed" id=<%= items[i]._id%>><%= items[i].task %></span>
-                        <% }else{ %>
-                            <span class="task"id=<%= items[i]._id%>><%= items[i].task %></span>
+        <div class="container">
+            <h1>Today's Task List: </h1>
+            <% if(items.length> 0){ %>
+                <ul class="todoItems collection">
+                    <% for(let i=0; i < items.length; i++) {%>
+                        <li class="item collection-item " data-id=<%=items[i]._id%>>
+                            <% if(items[i].completed===true) {%>
+                            <span class="task completed"><%= items[i].task %></span>
+                            <% }else{ %>
+                            <span class="task" ><%= items[i].task %></span>
+                            <% } %>
+                            <span class="badge close grey lighten-3"><i class="material-icons ">close</i></span>
+                        </li>
                         <% } %>
-                        <span class="badge close"><i class="material-icons col s3 ">close</i></span>  
-                    </li>
-                    <% } %>         
-        </ul>
-        <% } %>
-        <h2>Left to do: <%= left %></h2>
+                </ul>
+                <% } %>
+            <h2>Left to do: <%= left %></h2>
+            <% if (date === dayjs().format('MMM DD, YYYY')){ %>
+                <h2>Add a Task:</h2>
+            <form action="/createTask" method="POST">
+                <input type="text" placeholder="Add item here.." name="task">
+                <input type="submit">
+            </form>
+            <% } %>
+        </div>
 
-        <h2>Add a Todo:</h2>
-        <form action="/addTodo" method="POST">
-            <input type="text" placeholder="Add item here.." name="todoItem">
-            <input type="submit">
-        </form>
     </div>
-
-</div>
-    
     <script src='js/main.js'></script>
 </body>
+
 </html>
